@@ -1,0 +1,18 @@
+def heading {
+	h1.heading { @heading }
+}
+def image {
+	div.imgWrap { img.wrappedImg[src=@src] }
+}
+def text {
+	p.content { @~content }
+}
+def main {
+	div#main {
+		heading()
+		div#content {
+			image(src:@image)
+			/* here is where we'll insert additional textual content */
+		}
+	}
+}
