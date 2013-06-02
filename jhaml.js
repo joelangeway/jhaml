@@ -10,7 +10,6 @@ define(['underscore'], function(_) {
 	function Jhaml(opt) {
 		_.extend(this,
 		{
-			defaultParams: {}, //the properties of this object shall be parameters available to every template
 			templates: {}, //externally callable templates, everything named you complied plus all the defs there in get a function with that name here
 			_itos: {}, //internal template op codes, every jhaml template is also represented abstractly in this hash so they can be composed effeciently
 		}, opt);
