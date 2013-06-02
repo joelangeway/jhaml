@@ -191,6 +191,8 @@ define(['underscore'], function(_) {
 		    		return parseRef(m);
 		    	} else if(m = txt1.match(/^\s*@\s*(~?)\s*\(\s*([a-z]\w*(?:\s*\.\s*[a-z]\w*)*)\s*\)/i)) {
 		    		return parseRef(m);
+		    	} else {
+		    		return false;
 		    	}
 		    }
 		    function parseCallEnd() {
