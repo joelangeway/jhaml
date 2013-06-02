@@ -18,7 +18,7 @@ What Jhaml is and is not for
 ---------------------
 Jhaml is intended to solve the problem of quickly generating and maintaining HTML structure. It does not support iteration or alternation of any kind. It purposefully does not make it easy to put policy in templates. It is intended to sit on top of a view model of some sort which will contain any such logic.
 
-It defines functions which return strings. It does interact with the DOM. It does not update in place.
+It defines functions which return strings. It does not interact with the DOM. It does not update in place.
 
 There are lots of JavaScript frameworks. This isn't one of them. It's a DSL for making HTML and it's an opinionated template engine.
 
