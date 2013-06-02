@@ -12,7 +12,7 @@ Jhaml is a notation for defining named templates which can call to each other li
 
 What Jhaml.js is
 ----------------
-Jhaml.js is a free JavaScript implementation of the jhaml notation. It is structured as a require.js module which exports one constructor. To make a jhaml.js object simply "new" that constructor. The resulting jhaml.js object will have a templates object as a property and a compile method. Feed jhaml notation to the compile method, and template functions show up on the templates object. See jhaml_tests.html and jhaml_demo.html for example usage.
+Jhaml.js is a JavaScript implementation of the jhaml notation. It is structured as a require.js module which exports one constructor. To make a jhaml.js object simply "new" that constructor. The resulting jhaml.js object will have a templates object as a property and a compile method. Feed jhaml notation to the compile method, and template functions show up on the templates object. See jhaml_tests.html and jhaml_demo.html for example usage.
 
 What Jhaml is and is not for
 ---------------------
