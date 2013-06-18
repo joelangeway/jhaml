@@ -115,6 +115,7 @@ Comments may appear anywhere a tag may or before argument names in a call or aft
 Command Line Tool
 -----------------
 To create HTML assets statically there is a command line tool that NPM will install for you. It is used thusly:
+
     $ jhamlc --help
     This is the command line tool for converting jhaml source to HTML. Pass it files containing jhaml source and it outputs HTML. Each file is implicately wrapped in a template definition and the template called after each file. Files are processed in the order the appear. A single - in place of a filename indicates standard input and will cause jhamlc to read stdin to the end and process it as a single file in sequence. To specify a bag of arguments to pass, include a JSON literal object as a command line argument. If no files are given, then standard input is implied as though a single - were given. 
     $ echo "div { @foo } " | jhamlc '{"foo":"bar"}' -
