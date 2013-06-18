@@ -234,7 +234,36 @@ require(['jhaml', 'underscore'], function(Jhaml, _) {
 			html: '<span class="a1">A</span><span class="b1">B</span><span class="c1">C</span>' + 
 					'<span class="a2">A</span><span class="b2">B</span><span class="c2">CC</span>' +
 					'<span class="a3">A</span><span class="b3">CC</span><span class="c3">B</span>'
-		}
+		},
+		{
+			testname: 'For .. In',
+			jhaml: 'def call1 { for txt in @txts { span { @txt } } }',
+			tname: 'call1',
+			args: {txts: ['a', 'b', 'c'] },
+			html: '<span>a</span><span>b</span><span>c</span>'
+		},
+		{
+			testname: 'For .. In 2',
+			jhaml: 'def call1 { for txt, name in @txts { span { @name ~-~ @txt } } }',
+			tname: 'call1',
+			args: {txts: {b:'3', a:'2', c:'1'} },
+			html: '<span>a-2</span><span>b-3</span><span>c-1</span>'
+		},
+		{
+			testname: 'For .. In 3',
+			jhaml: 'def call1 { for txt, index in @txts { span { @index ~-~ @txt } } }',
+			tname: 'call1',
+			args: {txts: ['a', 'b', 'c'] },
+			html: '<span>0-a</span><span>1-b</span><span>2-c</span>'
+		},
+		{
+			testname: 'For .. In 4',
+			jhaml: 'def call1 { for txt in @txts { span { @txt ~ - ~ @b ~ - ~ @c } } } def call2 { div { call1(txts:@a, b:"Q") } }',
+			tname: 'call2',
+			args: {a: ['a', 'b', 'c'], b: 'P', c: 'X' },
+			html: '<div><span>a - Q - X</span><span>b - Q - X</span><span>c - Q - X</span></div>'
+		},
+		
 	];
 	_.each(testsForSuccess, function(t) {
 		test(t.testname, function() {

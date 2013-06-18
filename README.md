@@ -16,7 +16,7 @@ Jhaml.js is a JavaScript implementation of the jhaml notation. It is structured 
 
 What Jhaml is and is not for
 ---------------------
-Jhaml is intended to solve the problem of quickly generating and maintaining HTML structure. It does not support iteration or alternation of any kind. It purposefully does not make it easy to put policy in templates. It is intended to sit on top of a view model of some sort which will contain any such logic.
+Jhaml is intended to solve the problem of quickly generating and maintaining HTML structure. It purposefully does not make it easy to put policy in templates. It is intended to sit on top of a view model of some sort which will contain any such logic.
 
 It defines functions which return strings. It does not interact with the DOM. It does not update in place.
 
@@ -111,6 +111,30 @@ Comments may appear anywhere a tag may or before argument names in a call or aft
             ) /*end call to callee */ 
         }
     }
+
+Arrays and objects can be enumerated with a for..in construct so that this:
+    
+    def call1 { for txt in @txts { span { @txt } } }
+
+when called with this:
+
+    {txts: ['a', 'b', 'c'] }
+
+will produce this:
+
+    <span>a</span><span>b</span><span>c</span>
+
+Objects properties are enumerated by the order of their names according to Array.sort. Property names or array indexes are available by simply giving a second iteration variable name. So that this:
+
+    def call1 { for txt, name in @txts { span { @name ~-~ @txt } } }
+
+when called with this:
+
+    {txts: {b:'3', a:'2', c:'1'} }
+
+will produce this:
+
+    <span>a-2</span><span>b-3</span><span>c-1</span>
 
 Command Line Tool
 -----------------

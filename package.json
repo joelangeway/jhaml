@@ -1,12 +1,15 @@
 {
   "name": "jhaml",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "description": "Joe's HTML Abstraction Markup Language, a DSL/template engine to reduce the tedium of copious, partially redundant HTML templates",
   "homepage": "https://github.com/joelangeway/jhaml",
   "author": "Joe Langeway <joelangeway@gmail.com>",
   "contributors": [
     "Clint Zehner",
     "Jamal Williams"
+  ],
+  "keywords": [
+  	"jhaml", "HMTL", "haml", "joelangeway", "HTML Abstraction", "template", "joe"
   ],
   "bugs": {
     "url": "https://github.com/joelangeway/jhaml/issues"

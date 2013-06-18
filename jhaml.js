@@ -35,7 +35,8 @@ define(['underscore'], function(_) {
 			TEXTREF: 4,		//output html escaped value of argument
 			EXTCALL: 5,		//call a function from the templates collection
 			INTCALL: 6,		//call a program from the _itos collection
-			BODY: 7		//run a program stored in op
+			BODY: 7,		//run a program stored in op
+			FOR: 8			//execute subtemplate for each element of collection
 		},
 		lookup: function(params, name) {
 			//this function can be overridden if more sophisticated model objects are used that cannot be indexed like objects
@@ -104,6 +105,28 @@ define(['underscore'], function(_) {
 					_.each(op.body, function(tel) {
 						self.execute(tel, params, htmla);
 					});
+					break;
+				case opcodes.FOR:
+					var collection = this._resolveLookUp(params, op.path, error)
+						, opbody = op.body
+						, valueVarName = op.valueVarname
+						, keyVarName = op.keyVarName
+						;
+					function perItem(val, key) {
+						var pbase = {};
+						pbase[valueVarName] = val;
+						keyVarName && (pbase[keyVarName] = key);
+						self.execute(op.body, _.extend({}, params, pbase), htmla);						
+					}
+					if(_.isArray(collection)) {
+						_.each(collection, perItem);
+					} else if(_.isObject(collection)) {
+						var keys = _.keys(collection);
+						keys.sort();
+						_.each(keys, function(key) { perItem(collection[key], key); });
+					} else {
+						error('for..in may only be applied to arrays or objects: ' + op.path.join('.'));
+					}
 					break;
 
 				default:
@@ -237,7 +260,7 @@ define(['underscore'], function(_) {
 		    			parseBody() || 
 		    			error('Expected call argument value');
 		    	if(op0.opcode === opcodes.HTMLREF) {
-		    		op0.opcode === opcodes.PARAMREF;
+		    		op0.opcode = opcodes.PARAMREF;
 		    		op1 = op0;
 		    	} else {
 	    			op1 = emit( { opcode: opcodes.PARAMBODY, body: op0 } )
@@ -427,6 +450,66 @@ define(['underscore'], function(_) {
 		    		return false;
 		    	}
 		    }
+		    function parseForIn() {
+		    	var m;
+		    	if(m = txt1.match(/^\s*in\s*/)) {
+		    		eatChars(m[0].length);
+		    		return true;
+		    	} else {
+		    		return false;
+		    	}
+		    }
+		    function parseVariableNameSeparator() {
+		    	var m;
+		    	if(m = txt1.match(/^\s*,\s*/)) {
+		    		eatChars(m[0].length);
+		    		return true;
+		    	} else {
+		    		return false;
+		    	}
+		    }
+		    function parseVariableName() {
+		    	var m;
+		    	if(m = txt1.match(/^\s*([a-z][-\w]*)/i)) {
+		    		eatChars(m[0].length);
+		    		return m[1];
+		    	} else {
+		    		return false;
+		    	}
+		    }
+		    function parseFor() {
+		    	var m;
+		    	if(m = txt1.match(/^\s*for\s+/i)) {
+		    		var op = emit( { opcode: opcodes.FOR, body: null, valueVarname: null, keyVarName: null, path: null } );
+		    		eatChars(m[0].length);
+		    		if(!(op.valueVarname = parseVariableName())) {
+		    			error('Expected iterator value variable name');
+		    		}
+		    		if(parseVariableNameSeparator()) {
+			    		if(!(op.keyVarName = parseVariableName())) {
+			    			error('Expected iterator key variable name');
+			    		}	    			
+		    		}
+		    		if(!parseForIn()) {
+		    			error('Expected "in" after "for .."');
+		    		}
+		    		var ref = parseReference();
+		    		if(!ref) {
+		    			error('Expected reference to collection after "for .. in"');
+		    		}
+		    		if(ref.op == opcodes.TEXTREF) {
+		    			error('Only text can be html escaped');
+		    		}
+		    		op.path = ref.path;
+		    		if(!(op.body = parseBody())) {
+						error('Expected body, "{", after "for .. in"');
+		    		}
+
+		    		return op;
+		    	} else {
+		    		return false;
+		    	}
+		    }
 		    function parseBodyClose() {
 		    	var m;
 		    	if(m = txt1.match(/^\s*\}\s*/)) {
@@ -444,6 +527,7 @@ define(['underscore'], function(_) {
 	    			eatChars(m[0].length);
 	    			while( !parseBodyClose() ) {
     					var subOp = parseCall() || 
+    						parseFor() ||
     						parseTag() || 
     						parseLiteral() || 
     						parseReference() ||
