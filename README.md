@@ -22,6 +22,11 @@ It defines functions which return strings. It does not interact with the DOM. It
 
 There are lots of JavaScript frameworks. This isn't one of them. It's a DSL for making HTML and it's an opinionated template engine.
 
+How to get it
+-------------
+    npm install jhaml
+You can then require jhaml as a node.js module or in the browser as a requirejs module. It currently requires underscore, requirejs, and amdefine. NPM will get all those for you.
+
 Brief tutorial
 --------------
 See jhaml_tests.js and jhaml_demo.js for the big picture. Here is a quick introduction to the notation.
@@ -107,5 +112,10 @@ Comments may appear anywhere a tag may or before argument names in a call or aft
         }
     }
 
-
-
+Command Line Tool
+-----------------
+To create HTML assets statically there is a command line tool that NPM will install for you. It is used thusly:
+    $ jhamlc --help
+    This is the command line tool for converting jhaml source to HTML. Pass it files containing jhaml source and it outputs HTML. Each file is implicately wrapped in a template definition and the template called after each file. Files are processed in the order the appear. A single - in place of a filename indicates standard input and will cause jhamlc to read stdin to the end and process it as a single file in sequence. To specify a bag of arguments to pass, include a JSON literal object as a command line argument. If no files are given, then standard input is implied as though a single - were given. 
+    $ echo "div { @foo } " | jhamlc '{"foo":"bar"}' -
+    <div>bar</div>
