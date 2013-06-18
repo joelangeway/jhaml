@@ -58,7 +58,7 @@ function argLoop(argi) {
 		return;
 	}
 	var arg = process.argv[argi].replace(/^\s+|\s+$/g, '');
-	if(arg.match(/jhamlc\.js$/)) {
+	if(arg.match(/jhamlc(?:\.js)?$/)) {
 		return argLoop(argi + 1);
 	}
 	if(arg == '--help') {
