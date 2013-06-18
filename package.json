@@ -1,0 +1,27 @@
+{
+  "name": "jhaml",
+  "version": "0.0.9",
+  "description": "Joe's HTML Abstraction Markup Language, a DSL/template engine to reduce the tedium of copious, partially redundant HTML templates",
+  "homepage": "https://github.com/joelangeway/jhaml",
+  "author": "Joe Langeway <joelangeway@gmail.com>",
+  "contributors": [
+    "Clint Zehner",
+    "Jamal Williams"
+  ],
+  "bugs": {
+    "url": "https://github.com/joelangeway/jhaml/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joelangeway/jhaml.git"
+  },
+  "main": "./jhaml",
+  "dependencies": {
+  	"underscore": ">=1.4.4",
+  	"requirejs": ">=2.1.6",
+  	"amdefine": ">=0.0.5"
+  },
+  "bin": {
+  	"jhamlc": "./jhamlc.js"
+  }
+}

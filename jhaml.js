@@ -5,6 +5,8 @@
  *
  */
 
+if (typeof define !== 'function') { var define = require('amdefine')(module) }
+
 define(['underscore'], function(_) {
 
 	function Jhaml(opt) {
@@ -15,7 +17,11 @@ define(['underscore'], function(_) {
 		}, opt);
 	}
 	Jhaml.prototype = {
-
+		_log: function() {
+			var window;
+			if(window && window.console && window.console.log && window.console.log.apply)
+				return window.console.log.apply(window.console, arguments);
+		},
 		_echars: {'<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;'},
 		escape: function (txt) {
 			var echars = this._echars;
@@ -139,7 +145,7 @@ define(['underscore'], function(_) {
 		    function error(msg0) {
 		    	var cPos = txt0.length - txt1.length;
 		    	var msg1 = 'jhaml.js: ' + msg0 + ' filename: ' + filename + ', line: ' + line + ', cPos: ' + cPos;
-		    	window.console && console.log && console.log.call && console.log(msg1);
+		    	self._log(msg1);
 		    	throw new Error(msg1);
 		    }
 

@@ -62,7 +62,7 @@ would result in HTML like this:
 
     <div class="wrap"><p>paragraph 1</p><p>paragraph 2more</p></div>
 
-Arguments can be references with an @ sign. So this:
+Arguments can be referenced with an @ sign. So this:
 
     def fDiv { div { @content.html } }
 

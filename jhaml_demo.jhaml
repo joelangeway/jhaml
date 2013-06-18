@@ -14,5 +14,9 @@ def main {
 			image(src:@image)
 			/* here is where we'll insert additional textual content */
 		}
+		div#source {
+			p { ~The jhaml source for this page looks like this:~ }
+			pre { @~source }
+		}
 	}
 }

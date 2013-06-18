@@ -13,7 +13,7 @@ requirejs.config({
     	}
     },
     paths: {
-    	underscore: 'lib/underscore'
+    	underscore: 'node_modules/underscore/underscore'
     }
 });
 

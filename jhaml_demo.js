@@ -12,7 +12,7 @@ requirejs.config({
     },
 	paths: {
 		'jquery' : 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery',
-		underscore: 'lib/underscore'
+		underscore: 'node_modules/underscore/underscore'
 	}
 });
 
@@ -25,7 +25,8 @@ require(['jhaml', 'underscore', 'jquery'], function(Jhaml, _, $) {
 		texts: [
 			"Jhaml stands for Joe's HTML abstraction markup language.",
 			"Jhaml is pronounced 'Jamal' but may be pronounced as 'Jamle' in the presence of people named 'Jamal' to avoid confusion."
-		]
+		],
+		source: ''
 	}
 
 	function afterLoad() {
@@ -36,6 +37,7 @@ require(['jhaml', 'underscore', 'jquery'], function(Jhaml, _, $) {
 		url:'jhaml_demo.jhaml',
 		dataType: 'text',
 		success: function(templates) {
+			data.source = templates;
 			jhaml.compile(templates);
 			afterLoad();
 		}
