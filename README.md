@@ -100,6 +100,18 @@ You can call into other templates by giving their name followed by a list of nam
     def caller { div { callee(content: { span { ~a block for an argument~ } } ) } }
     def caller { div { callee(arg: @a.reference, arg2: "a second argument in a quote") } }
 
+You can "splat" multiple arguments by specifying a reference to an object without a name before the named arguments. So this:
+
+    def callee { img[src=@avatar] span { @~username } } def caller { div { callee(@user) } }
+
+when called like this
+
+    jhaml.templates.caller( {user: {avatar: "imageurl", username: "myusername"}})
+
+would produce this
+
+    <div><img src="imageurl"></img><span>myusername</span></div>
+
 White space is totally meaningless and may be omitted or abused except inside literals and quotes where it is exactly preserved.
 
 Comments may appear anywhere a tag may or before argument names in a call or after argument values in a call. They begin with "/*" and end with "*/" and may nest. They are not respected inside quotes or literals. Like so:

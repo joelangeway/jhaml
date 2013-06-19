@@ -58,6 +58,17 @@ define(['underscore'], function(_) {
 				throw new Error(msg + ' at ' + op.filename + ':' + op.line + ':' + op.cPos)
 			}
 			var opcodes = this._opcodes;
+
+			function evalargs() {
+				var args = _.extend({}, params);
+				if(op.splat) {
+					_.extend(args, self.execute(op.splat, params))
+				}
+				_.each(op.args, function(val, name) {
+					args[name] = self.execute(val, params);
+				});
+				return args;	
+			}
 			switch(op.opcode)
 			{
 				case opcodes.LITERAL: //text that is independent of the params
@@ -80,10 +91,7 @@ define(['underscore'], function(_) {
 					break;
 				
 				case opcodes.EXTCALL:
-					var args = _.extend({}, params);
-					_.each(op.args, function(val, name) {
-						args[name] = self.execute(val, params);
-					});
+					var args = evalargs();
 					var f = this.templates[op.tname]
 					if(f === undefined)
 						error('external template ' + op.fname + ' is undefined');
@@ -91,10 +99,7 @@ define(['underscore'], function(_) {
 					break;
 
 				case opcodes.INTCALL:
-					var args = _.extend({}, params);
-					_.each(op.args, function(val, name) {
-						args[name] = self.execute(val, params);
-					});
+					var args = evalargs();
 					var _t = this._itos[op.tname]
 					if(_t === undefined)
 						error('internal template ' + op.fname + ' is undefined');
@@ -279,6 +284,15 @@ define(['underscore'], function(_) {
 		    		eatChars(m[0].length);
 		    		while(parseComment())
 		    			eatWhitespace();
+		    		var splat = parseReference();
+		    		if(splat) {
+		    			if(splat.opcode !== opcodes.HTMLREF) {
+		    				error('Splat argument must be an undecorated reference.')
+		    			}
+		    			splat.opcode = opcodes.PARAMREF;
+		    			op.splat = splat;
+		    			parseCallArgSeparator();
+		    		}
 		    		if(parseCallEnd()) {
 		    			return op;
 		    		}

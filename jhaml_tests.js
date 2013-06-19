@@ -236,6 +236,27 @@ require(['jhaml', 'underscore'], function(Jhaml, _) {
 					'<span class="a3">A</span><span class="b3">CC</span><span class="c3">B</span>'
 		},
 		{
+			testname: 'splat 1',
+			jhaml: 'def call2 { li{@a} li{@foo} } def call1 { ul{ call2( @bar ) }}',
+			tname: 'call1',
+			args: {foo: 1, bar: {a:2, b: 3}},
+			html: '<ul><li>2</li><li>1</li></ul>'
+		},
+		{
+			testname: 'splat 2',
+			jhaml: 'def call2 { li{@b.c} li{@e} li{@f.h} } def call1 { ul{ call2( @b.d ) }}',
+			tname: 'call1',
+			args: {a: 1, b: {c:2, d: {e: 3, f: {g: 4, h: 5}}}},
+			html: '<ul><li>2</li><li>3</li><li>5</li></ul>'
+		},
+		{
+			testname: 'splat 3',
+			jhaml: 'def call2 { li{@b.c} li{@e} li{@f.h} li{@g.g}} def call1 { ul{ call2( @b.d, g: @b.d.f ) }}',
+			tname: 'call1',
+			args: {a: 1, b: {c:2, d: {e: 3, f: {g: 4, h: 5}}}},
+			html: '<ul><li>2</li><li>3</li><li>5</li><li>4</li></ul>'
+		},
+		{
 			testname: 'For .. In',
 			jhaml: 'def call1 { for txt in @txts { span { @txt } } }',
 			tname: 'call1',

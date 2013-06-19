@@ -1,6 +1,6 @@
 {
   "name": "jhaml",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Joe's HTML Abstraction Markup Language, a DSL/template engine to reduce the tedium of copious, partially redundant HTML templates",
   "homepage": "https://github.com/joelangeway/jhaml",
   "author": "Joe Langeway <joelangeway@gmail.com>",
