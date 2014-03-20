@@ -284,6 +284,13 @@ require(['jhaml', 'underscore'], function(Jhaml, _) {
 			args: {a: ['a', 'b', 'c'], b: 'P', c: 'X' },
 			html: '<div><span>a - Q - X</span><span>b - Q - X</span><span>c - Q - X</span></div>'
 		},
+		{
+			testname: 'Concatenate identifier references',
+			jhaml: 'def call1 { span#el_@(i).@(j)_c[x=5][y=k_@(k)_k] }',
+			tname: 'call1',
+			args: {i: 3, j: 'b', k: 8},
+			html: '<span id="el_3" class="b_c" x="5" y="k_8_k"></span>'
+		}
 		
 	];
 	_.each(testsForSuccess, function(t) {

@@ -322,11 +322,30 @@ define(['underscore'], function(_) {
 		    }
 		    function parseIdentifier() {
 		    	var m;
-		    	if(m = txt1.match(/^\s*([a-z][-\w]*)\s*/i)) {
+		    	var toks = [], tok;
+		    	if(m = txt1.match(/^\s*([-\w]+)/i))
+		    	{
 		    		eatChars(m[0].length);
-		    		return emit( { opcode: opcodes.LITERAL, text: m[1] } );
-		    	} else {
+		    		toks.push(emit( { opcode: opcodes.LITERAL, text: m[1] } ));
+		    	}
+		    	for(;;) {
+		    		if(txt1.match(/^\s/)) {
+		    			break;
+		    		} else if(m = txt1.match(/^[-\w]+/i)) {
+			    		eatChars(m[0].length);
+			    		toks.push(emit( { opcode: opcodes.LITERAL, text: m[0] } ));
+		    		} else if(tok = parseReference()) {
+		    			toks.push(tok);
+		    		} else {
+		    			break;
+		    		}
+		    	}
+		    	if(toks.length == 0) { 
 		    		return false;
+		    	} else if(toks.length == 1) {
+		    		return toks[0];
+		    	} else {
+		    		return emit( { opcode: opcodes.BODY, body: toks } );
 		    	}
 		    }
 		    function parseTagId(tag) {
@@ -357,7 +376,7 @@ define(['underscore'], function(_) {
 		    	if(m = txt1.match(/^\s*\[\s*([-\w]+)\s*=\s*/)) {
 		    		eatChars(m[0].length);
 		    		attrName = m[1];
-		    		attrValue = parseQuote() || parseReference() || error('Expected Attribute Value');
+		    		attrValue = parseQuote() || parseReference() || parseIdentifier() || error('Expected Attribute Value');
 		    		tag.attr[attrName] = attrValue;
 		    		if(m = txt1.match(/^\s*\]\s*/)) {
 		    			eatChars(m[0].length);
